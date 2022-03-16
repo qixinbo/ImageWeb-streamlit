@@ -1,7 +1,7 @@
 import setuptools
 
 setuptools.setup(
-    name="streamlit-component-vue",
+    name="image-web",
     version="0.0.1",
     author="",
     author_email="",

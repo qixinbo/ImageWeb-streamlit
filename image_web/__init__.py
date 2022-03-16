@@ -18,14 +18,14 @@ _RELEASE = False
 
 if not _RELEASE:
     _component_func = components.declare_component(
-        "my_component",
+        "image_web",
         url="http://localhost:3001",
     )
 else:
     parent_dir = os.path.dirname(os.path.abspath(__file__))
     build_dir = os.path.join(parent_dir, "frontend/dist")
     _component_func = components.declare_component(
-        "my_component", path=build_dir)
+        "image_web", path=build_dir)
 
 # Create a wrapper function for the component. This is an optional
 # best practice - we could simply expose the component function returned by
