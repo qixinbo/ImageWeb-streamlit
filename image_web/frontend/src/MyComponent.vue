@@ -1,214 +1,262 @@
 <template>
   <div class="sidebar-page">
-    <section class="sidebar-layout">
-      <div class="lds-ellipsis" v-show="loading">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-      <b-sidebar
-        :position="position"
-        :fullheight="true"
-        :fullwidth="false"
-        :overlay="false"
-        :open.sync="open"
-        :mobile="mobile"
-        :can-cancel="true"
-        :expand-on-hover="expandOnHover"
-        :reduce="reduce"
-        type="is-light"
-      >
-        <div class="p-1">
-          <div class="block">
-            <img
-              :style="{ width: mode === 'full' ? '220px' : '120px' }"
-              src="static/img/github.svg"
-            />
-            <button
-              class="button floating-close-btn is-small"
-              @click="openSidebar(false)"
-            >
-              <b-icon icon="chevron-left"></b-icon>
-            </button>
-          </div>
+    <section class="sidebar-layout" height="100%">
 
-          <div class="block" >
-            <div class="field">
-              <b-dropdown aria-role="list">
-                <b-button
-                  class="is-primary"
-                  slot="trigger"
-                  slot-scope="{ active }"
-                  icon-left="plus"
-                >
-                  <span>Add layer</span>
-                  <b-icon :icon="active ? 'menu-up' : 'menu-down'"></b-icon>
-                </b-button>
-                <input
-                  ref="file_input"
-                  @change="loadFiles($event)"
-                  type="file"
-                  style="display:none;"
-                  multiple
-                />
-                <b-dropdown-item
-                  @click="$refs.file_input.click()"
-                  value="file"
-                  aria-role="listitem"
-                  ><b-icon icon="file-import"></b-icon> From
-                  File(s)</b-dropdown-item
-                >
 
-                <b-dropdown-item
-                  @click="newLayer(type)"
-                  v-for="(comp, type) in layerTypes"
-                  v-show="comp.show"
-                  :key="type"
-                  :value="type"
-                  aria-role="listitem"
-                  ><b-icon icon="layers"></b-icon>{{ type }}</b-dropdown-item
-                >
-              </b-dropdown>
-              &nbsp;
-              <b-button
-                @click="goto('/docs')"
-                target="_blank"
-                icon-left="book-open-outline"
-              >
-                Docs
-              </b-button>
-
-              <b-dropdown aria-role="list" position="is-bottom-left">
-                <button class="button" slot="trigger">
-                  <b-icon icon="dots-vertical" slot="trigger"></b-icon>
-                </button>
-                <b-dropdown-item
-                  @click="goto('https://github.com/imjoy-team/kaibu')"
-                  aria-role="listitem"
-                  ><b-icon icon="github"></b-icon> Github</b-dropdown-item
-                >
-                <b-dropdown-item @click="screenshot()" aria-role="listitem"
-                  ><b-icon icon="camera"></b-icon> Screenshot</b-dropdown-item
-                >
-                <b-dropdown-item @click="goto('/#/about')" aria-role="listitem"
-                  ><b-icon icon="information-variant"></b-icon> About Kaibu v{{
-                    version
-                  }}</b-dropdown-item
-                >
-              </b-dropdown>
-            </div>
-          </div>
-
-          <b-tabs
-            size="is-small"
-            class="block"
-            v-if="Object.keys(standaloneWidgets).length > 0"
-            v-model="selectedWidgetTab"
-          >
-            <b-tab-item
-              v-for="(widget, id) in standaloneWidgets"
-              :key="id"
-              :label="widget.name"
-              :icon="widget.icon"
-              :style="{
-                'max-height': widget.max_height
-                  ? widget.max_height + 'px'
-                  : '400px'
-              }"
-            >
-              <component
-                :is="widgetTypes[widget.type]"
-                @loading="loading = $event"
-                :config="widget"
-              />
-            </b-tab-item>
-          </b-tabs>
-
-          <br v-else />
-          <b-menu
-            class="is-custom-mobile"
-            @sorted="layerSorted()"
-            v-sortable="sortableOptions"
-          >
-            <b-menu-list label="Layers">
-              <b-menu-item
-                class="layer-item"
-                v-for="layer in layer_configs.slice().reverse()"
-                :key="layer.id"
-                @click="selectLayer(layer)"
-              >
-                <template slot="label">
-                  <button class="button is-small" @click="toggleVisible(layer)">
-                    <b-icon v-if="layer.visible" icon="eye-outline"></b-icon>
-                    <b-icon v-else icon="eye-off-outline"></b-icon>
-                  </button>
-                  {{
-                    (layer.name &&
-                      layer.name.slice(0, 30) +
-                        (layer.name.length > 30 ? "..." : "")) ||
-                      "Unnamed Layer"
-                  }}
-                  <b-dropdown
-                    aria-role="list"
-                    class="is-pulled-right"
-                    position="is-bottom-left"
-                  >
-                    <b-icon icon="dots-vertical" slot="trigger"></b-icon>
-                    <b-dropdown-item
-                      aria-role="listitem"
-                      icon="close-circle"
-                      @click="removeLayer(layer)"
-                      >Remove</b-dropdown-item
-                    >
-                  </b-dropdown>
+<!-- ---------------------------- menu test -->
+<!-- ---------------------------- menu test -->
+<!-- ---------------------------- menu test -->
+  <b-menu>
+    <b-menu-list label="Menu">
+      <b-menu-item icon="information-outline" label="Info"></b-menu-item>
+      <b-menu-item icon="settings" :active="isActive" expanded>
+        <template #label="props">
+          Administrator
+          <b-icon class="is-pulled-right" :icon="props.expanded ? 'menu-up' : 'menu-down'"></b-icon>
+        </template>
+        <b-menu-item icon="account" label="Users"></b-menu-item>
+        <b-menu-item icon="cellphone-link">
+          <template #label>
+            Devices
+            <b-dropdown aria-role="list" class="is-pulled-right" position="is-bottom-left">
+                <template #trigger>
+                    <b-icon icon="dots-vertical"></b-icon>
                 </template>
-              </b-menu-item>
-            </b-menu-list>
-          </b-menu>
+                <b-dropdown-item aria-role="listitem">Action</b-dropdown-item>
+                <b-dropdown-item aria-role="listitem">Another action</b-dropdown-item>
+                <b-dropdown-item aria-role="listitem">Something else</b-dropdown-item>
+            </b-dropdown>
+          </template>
+        </b-menu-item>
+        <b-menu-item icon="cash-multiple" label="Payments" disabled></b-menu-item>
+      </b-menu-item>
+      <b-menu-item icon="settings" :active="isActive" expanded>
+        <template #label="props">
+          Administrator
+          <b-icon class="is-pulled-right" :icon="props.expanded ? 'menu-up' : 'menu-down'"></b-icon>
+        </template>
+        <b-menu-item icon="account" label="Users"></b-menu-item>
+        <b-menu-item icon="cellphone-link">
+          <template #label>
+            Devices
+            <b-dropdown aria-role="list" class="is-pulled-right" position="is-bottom-left">
+                <template #trigger>
+                    <b-icon icon="dots-vertical"></b-icon>
+                </template>
+                <b-dropdown-item aria-role="listitem">Action</b-dropdown-item>
+                <b-dropdown-item aria-role="listitem">Another action</b-dropdown-item>
+                <b-dropdown-item aria-role="listitem">Something else</b-dropdown-item>
+            </b-dropdown>
+          </template>
+        </b-menu-item>
+        <b-menu-item icon="cash-multiple" label="Payments" disabled></b-menu-item>
+      </b-menu-item>
+      <b-menu-item icon="settings" :active="isActive" expanded>
+        <template #label="props">
+          Administrator
+          <b-icon class="is-pulled-right" :icon="props.expanded ? 'menu-up' : 'menu-down'"></b-icon>
+        </template>
+        <b-menu-item icon="account" label="Users"></b-menu-item>
+        <b-menu-item icon="cellphone-link">
+          <template #label>
+            Devices
+            <b-dropdown aria-role="list" class="is-pulled-right" position="is-bottom-left">
+                <template #trigger>
+                    <b-icon icon="dots-vertical"></b-icon>
+                </template>
+                <b-dropdown-item aria-role="listitem">Action</b-dropdown-item>
+                <b-dropdown-item aria-role="listitem">Another action</b-dropdown-item>
+                <b-dropdown-item aria-role="listitem">Something else</b-dropdown-item>
+            </b-dropdown>
+          </template>
+        </b-menu-item>
+        <b-menu-item icon="cash-multiple" label="Payments" disabled></b-menu-item>
+      </b-menu-item>
+      <b-menu-item icon="account" label="My Account">
+        <b-menu-item label="Account data"></b-menu-item>
+        <b-menu-item label="Addresses"></b-menu-item>
+      </b-menu-item>
+      <b-menu-item icon="account" label="My Account">
+        <b-menu-item label="Account data"></b-menu-item>
+        <b-menu-item label="Addresses"></b-menu-item>
+      </b-menu-item>
+      <b-menu-item icon="account" label="My Account">
+        <b-menu-item label="Account data"></b-menu-item>
+        <b-menu-item label="Addresses"></b-menu-item>
+      </b-menu-item>
+    </b-menu-list>
 
-          <hr class="solid" />
-          <div class="block" v-show="currentLayer" style="min-height: 150px;">
-            <b-menu-list
-              v-if="currentLayerWidget"
-              :label="currentLayerWidget.name"
-              :icon="currentLayerWidget.icon"
+  </b-menu>
+<!-- ---------------------------- menu test -->
+<!-- ---------------------------- menu test -->
+<!-- ---------------------------- menu test -->
+
+
+    <div class="p-1">
+      <div class="block" >
+        <div class="field">
+          <b-dropdown aria-role="list">
+            <b-button
+              class="is-primary"
+              slot="trigger"
+              slot-scope="{ active }"
+              icon-left="plus"
             >
-              <component
-                :is="widgetTypes[currentLayerWidget.type]"
-                @loading="loading = $event"
-                :config="currentLayerWidget"
-              />
-            </b-menu-list>
-            <b-menu-list label="Properties">
-              <component
-                v-for="layer in layer_configs"
-                v-show="currentLayer === layer"
-                @update-extent="updateExtent"
-                :ref="'layer_' + layer.id"
-                :key="layer.id"
-                :is="layerTypes[layer.type]"
-                @loading="loading = $event"
-                :selected="layer.selected"
-                :visible="layer.visible"
-                :map="map"
-                :config="layer"
-              />
-            </b-menu-list>
-          </div>
-        </div>
-      </b-sidebar>
+              <span>Add layer</span>
+              <b-icon :icon="active ? 'menu-up' : 'menu-down'"></b-icon>
+            </b-button>
+            <input
+              ref="file_input"
+              @change="loadFiles($event)"
+              type="file"
+              style="display:none;"
+              multiple
+            />
+            <b-dropdown-item
+              @click="$refs.file_input.click()"
+              value="file"
+              aria-role="listitem"
+              ><b-icon icon="file-import"></b-icon> From
+              File(s)</b-dropdown-item
+            >
 
-      <button
-        class="button floating-menu-btn"
-        v-show="!open"
-        @click="openSidebar(true)"
+            <b-dropdown-item
+              @click="newLayer(type)"
+              v-for="(comp, type) in layerTypes"
+              v-show="comp.show"
+              :key="type"
+              :value="type"
+              aria-role="listitem"
+              ><b-icon icon="layers"></b-icon>{{ type }}</b-dropdown-item
+            >
+          </b-dropdown>
+          &nbsp;
+          <b-button
+            @click="goto('/docs')"
+            target="_blank"
+            icon-left="book-open-outline"
+          >
+            Docs
+          </b-button>
+
+          <b-dropdown aria-role="list" position="is-bottom-left">
+            <button class="button" slot="trigger">
+              <b-icon icon="dots-vertical" slot="trigger"></b-icon>
+            </button>
+            <b-dropdown-item
+              @click="goto('https://github.com/imjoy-team/kaibu')"
+              aria-role="listitem"
+              ><b-icon icon="github"></b-icon> Github</b-dropdown-item
+            >
+            <b-dropdown-item @click="screenshot()" aria-role="listitem"
+              ><b-icon icon="camera"></b-icon> Screenshot</b-dropdown-item
+            >
+            <b-dropdown-item @click="goto('/#/about')" aria-role="listitem"
+              ><b-icon icon="information-variant"></b-icon> About Kaibu v{{
+                version
+              }}</b-dropdown-item
+            >
+          </b-dropdown>
+        </div>
+      </div>
+
+      <b-tabs
+        size="is-small"
+        class="block"
+        v-if="Object.keys(standaloneWidgets).length > 0"
+        v-model="selectedWidgetTab"
       >
-        <img
-          style="width: 30px; border-radius: 6px;"
-          src="static/img/kaibu-icon.svg"
-        />
-      </button>
+        <b-tab-item
+          v-for="(widget, id) in standaloneWidgets"
+          :key="id"
+          :label="widget.name"
+          :icon="widget.icon"
+          :style="{
+            'max-height': widget.max_height
+              ? widget.max_height + 'px'
+              : '400px'
+          }"
+        >
+          <component
+            :is="widgetTypes[widget.type]"
+            @loading="loading = $event"
+            :config="widget"
+          />
+        </b-tab-item>
+      </b-tabs>
+
+      <br v-else />
+      <b-menu
+        class="is-custom-mobile"
+        @sorted="layerSorted()"
+        v-sortable="sortableOptions"
+      >
+        <b-menu-list label="Layers">
+          <b-menu-item
+            class="layer-item"
+            v-for="layer in layer_configs.slice().reverse()"
+            :key="layer.id"
+            @click="selectLayer(layer)"
+          >
+            <template slot="label">
+              <button class="button is-small" @click="toggleVisible(layer)">
+                <b-icon v-if="layer.visible" icon="eye-outline"></b-icon>
+                <b-icon v-else icon="eye-off-outline"></b-icon>
+              </button>
+              {{
+                (layer.name &&
+                  layer.name.slice(0, 30) +
+                    (layer.name.length > 30 ? "..." : "")) ||
+                  "Unnamed Layer"
+              }}
+              <b-dropdown
+                aria-role="list"
+                class="is-pulled-right"
+                position="is-bottom-left"
+              >
+                <b-icon icon="dots-vertical" slot="trigger"></b-icon>
+                <b-dropdown-item
+                  aria-role="listitem"
+                  icon="close-circle"
+                  @click="removeLayer(layer)"
+                  >Remove</b-dropdown-item
+                >
+              </b-dropdown>
+            </template>
+          </b-menu-item>
+        </b-menu-list>
+      </b-menu>
+
+      <hr class="solid" />
+      <div class="block" v-show="currentLayer" style="min-height: 150px;">
+        <b-menu-list
+          v-if="currentLayerWidget"
+          :label="currentLayerWidget.name"
+          :icon="currentLayerWidget.icon"
+        >
+          <component
+            :is="widgetTypes[currentLayerWidget.type]"
+            @loading="loading = $event"
+            :config="currentLayerWidget"
+          />
+        </b-menu-list>
+        <b-menu-list label="Properties">
+          <component
+            v-for="layer in layer_configs"
+            v-show="currentLayer === layer"
+            @update-extent="updateExtent"
+            :ref="'layer_' + layer.id"
+            :key="layer.id"
+            :is="layerTypes[layer.type]"
+            @loading="loading = $event"
+            :selected="layer.selected"
+            :visible="layer.visible"
+            :map="map"
+            :config="layer"
+          />
+        </b-menu-list>
+      </div>
+    </div>
 
       <div class="p-1">
         <div id="map" :style="{ width: viewerWidth }"></div>
