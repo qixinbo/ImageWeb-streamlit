@@ -343,6 +343,7 @@ export default {
         //TODO: udpate the extent when selecting different plane
         extent = [extent_3d[0], extent_3d[2], extent_3d[1], extent_3d[3]];
       } else {
+
         let files;
         if (this.config.data instanceof File) {
           files = [this.config.data];
@@ -358,11 +359,13 @@ export default {
           cfg.uiContainer = document.getElementById(
             "itk-vtk-control_" + this.config.id
           );
+
           viewer = itkVtkViewer.createViewer(itk_layer.viewerElement, cfg);
           const vs = viewer
             .getViewProxy()
             .getRenderer()
             .getVolumes();
+          
           if (vs.length > 0) {
             const extent_3d = vs[0].getBounds();
             extent = [extent_3d[0], extent_3d[2], extent_3d[1], extent_3d[3]];
@@ -392,7 +395,6 @@ export default {
       }, 10);
       this.viewer = viewer;
       this.$emit("update-extent", { id: this.config.id, extent: extent });
-
       itk_layer.getLayerAPI = this.getLayerAPI;
 
       // since setVisible(false) will remove the canvas entirely

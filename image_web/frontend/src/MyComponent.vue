@@ -1,96 +1,6 @@
 <template>
   <div class="sidebar-page">
-    <section class="sidebar-layout" height="100%">
-
-
-<!-- ---------------------------- menu test -->
-<!-- ---------------------------- menu test -->
-<!-- ---------------------------- menu test -->
-  <b-menu>
-    <b-menu-list label="Menu">
-      <b-menu-item icon="information-outline" label="Info"></b-menu-item>
-      <b-menu-item icon="settings" :active="isActive" expanded>
-        <template #label="props">
-          Administrator
-          <b-icon class="is-pulled-right" :icon="props.expanded ? 'menu-up' : 'menu-down'"></b-icon>
-        </template>
-        <b-menu-item icon="account" label="Users"></b-menu-item>
-        <b-menu-item icon="cellphone-link">
-          <template #label>
-            Devices
-            <b-dropdown aria-role="list" class="is-pulled-right" position="is-bottom-left">
-                <template #trigger>
-                    <b-icon icon="dots-vertical"></b-icon>
-                </template>
-                <b-dropdown-item aria-role="listitem">Action</b-dropdown-item>
-                <b-dropdown-item aria-role="listitem">Another action</b-dropdown-item>
-                <b-dropdown-item aria-role="listitem">Something else</b-dropdown-item>
-            </b-dropdown>
-          </template>
-        </b-menu-item>
-        <b-menu-item icon="cash-multiple" label="Payments" disabled></b-menu-item>
-      </b-menu-item>
-      <b-menu-item icon="settings" :active="isActive" expanded>
-        <template #label="props">
-          Administrator
-          <b-icon class="is-pulled-right" :icon="props.expanded ? 'menu-up' : 'menu-down'"></b-icon>
-        </template>
-        <b-menu-item icon="account" label="Users"></b-menu-item>
-        <b-menu-item icon="cellphone-link">
-          <template #label>
-            Devices
-            <b-dropdown aria-role="list" class="is-pulled-right" position="is-bottom-left">
-                <template #trigger>
-                    <b-icon icon="dots-vertical"></b-icon>
-                </template>
-                <b-dropdown-item aria-role="listitem">Action</b-dropdown-item>
-                <b-dropdown-item aria-role="listitem">Another action</b-dropdown-item>
-                <b-dropdown-item aria-role="listitem">Something else</b-dropdown-item>
-            </b-dropdown>
-          </template>
-        </b-menu-item>
-        <b-menu-item icon="cash-multiple" label="Payments" disabled></b-menu-item>
-      </b-menu-item>
-      <b-menu-item icon="settings" :active="isActive" expanded>
-        <template #label="props">
-          Administrator
-          <b-icon class="is-pulled-right" :icon="props.expanded ? 'menu-up' : 'menu-down'"></b-icon>
-        </template>
-        <b-menu-item icon="account" label="Users"></b-menu-item>
-        <b-menu-item icon="cellphone-link">
-          <template #label>
-            Devices
-            <b-dropdown aria-role="list" class="is-pulled-right" position="is-bottom-left">
-                <template #trigger>
-                    <b-icon icon="dots-vertical"></b-icon>
-                </template>
-                <b-dropdown-item aria-role="listitem">Action</b-dropdown-item>
-                <b-dropdown-item aria-role="listitem">Another action</b-dropdown-item>
-                <b-dropdown-item aria-role="listitem">Something else</b-dropdown-item>
-            </b-dropdown>
-          </template>
-        </b-menu-item>
-        <b-menu-item icon="cash-multiple" label="Payments" disabled></b-menu-item>
-      </b-menu-item>
-      <b-menu-item icon="account" label="My Account">
-        <b-menu-item label="Account data"></b-menu-item>
-        <b-menu-item label="Addresses"></b-menu-item>
-      </b-menu-item>
-      <b-menu-item icon="account" label="My Account">
-        <b-menu-item label="Account data"></b-menu-item>
-        <b-menu-item label="Addresses"></b-menu-item>
-      </b-menu-item>
-      <b-menu-item icon="account" label="My Account">
-        <b-menu-item label="Account data"></b-menu-item>
-        <b-menu-item label="Addresses"></b-menu-item>
-      </b-menu-item>
-    </b-menu-list>
-
-  </b-menu>
-<!-- ---------------------------- menu test -->
-<!-- ---------------------------- menu test -->
-<!-- ---------------------------- menu test -->
-
+    <section class="sidebar-layout">
 
     <div class="p-1">
       <div class="block" >
@@ -457,7 +367,6 @@ export default {
       };
       // for of循环挺有内涵
       // https://juejin.cn/post/6844903513336610823
-      console.log("8888", this.layer_configs)
       for (let file of files) {
         let detected = false;
         for (let k of Object.keys(file_mapping)) {
@@ -474,6 +383,7 @@ export default {
         }
         // 如果不是以上述四种后缀格式，则统一使用itk-vtk来处理该文件。
         if (!detected) {
+          console.log("8888", this.layer_configs)
           this.addLayer({
             type: "itk-vtk",
             name: file.name,
@@ -549,6 +459,7 @@ export default {
       });
     },
     updateExtent(config) {
+      console.log("^^^^^^^^^^^^^ config in updateExtent = ", this.map)
       //TODO: calculate the extent for all layers
       const projection = new Projection({
         code: "image",
@@ -588,41 +499,7 @@ export default {
         })
       });
       this.$store.commit("setMap", map);
-      // inside an iframe
-      if (window.self == window.top) {
-        console.log("-------------- window.self == window.top -----------")
-        // setupImJoyAPI({
-        //   addLayer: this.addLayer,
-        //   selectLayer: this.selectLayer,
-        //   removeLayer: this.removeLayer,
-        //   clearLayers: this.clearLayers,
-        //   addWidget: this.addWidget,
-        //   removeWidget: this.removeWidget,
-        //   selectWidget: this.selectWidget,
-        //   setLoader: this.setLoader,
-        //   setMode: this.setMode,
-        //   setSliders: this.setSliders,
-        //   updateSlider: this.updateSlider,
-        //   openSidebar: this.openSidebar
-        // });
-      } else {
-        console.log("-------------- window.self !== window.top -----------")
-        this.addLayer({
-          type: "itk-vtk",
-          name: "example image",
-          data: "https://images.proteinatlas.org/19661/221_G2_1_red_green.jpg"
-        });
 
-        await this.addLayer({
-          type: "vector",
-          name: "shape vectors",
-          data:
-            "https://gist.githubusercontent.com/oeway/7c62128939a7f9b1701e2bbd72b809dc/raw/example_shape_vectors.json",
-          predefined_tags: ["nuclei", "cell"],
-          only_predefined_tags: true,
-          single_tag_mode: false
-        });
-      }
     },
 
     selectWidget(name) {
@@ -787,7 +664,7 @@ export default {
   padding: 10px;
 }
 .sidebar-layout {
-  height: 100vh;
+  height: 800px;
 }
 /* Solid border */
 hr.solid {
@@ -801,6 +678,8 @@ svg {
 }
 
 .block {
+  margin-left: 10px !important;
+  margin-right: 15px !important;
   margin-bottom: 10px !important;
 }
 

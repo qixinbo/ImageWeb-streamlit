@@ -35,18 +35,22 @@ export const store = new Vuex.Store({
                   );
                 }
               }
+              console.log("-------", layer)
               layer.config = config;
               layer.setVisible(config.visible);
               layer.getLayerAPI = layer.getLayerAPI || function() {};
+
               context.commit("initialized", layer);
               context.commit("setCurrentLayer", layer.config);
               context.commit("sortLayers");
+              
               if (config._add_layer_promise) {
                 config._add_layer_promise.resolve(layer);
                 delete config._add_layer_promise;
               }
             })
             .catch(e => {
+              console.log("before111 = ", e)
               if (config._add_layer_promise) {
                 config._add_layer_promise.reject(e);
                 delete config._add_layer_promise;
@@ -75,6 +79,7 @@ export const store = new Vuex.Store({
       layer.setZIndex(state.layer_configs.length - 1);
     },
     addLayer(state, config) {
+      console.log("**********config=", config)
       if (config.visible === undefined) config.visible = true;
       if (typeof config.index === "number") {
         const index = config.index;
