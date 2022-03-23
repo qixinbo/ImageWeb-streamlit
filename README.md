@@ -1,50 +1,64 @@
-# Streamlit Component template in Vue.js
+<a href="https://kaibu.org" target="_blank" ><img src="https://raw.githubusercontent.com/imjoy-team/kaibu/master/public/static/img/kaibu-banner.svg?sanitize=true" width="380" alt="Kaibu"></img>
+</a>
 
-Vue 2 template to build a Streamlit component. Uses Vue.js scoped slot to send parameters from Streamlit Python script into `args` props of your component.
+[![Launch ImJoy](https://imjoy.io/static/badge/launch-imjoy-badge.svg)](https://imjoy.io/#/app?plugin=https://kaibu.org/#/app)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gist/oeway/690c2e62311223ae93e644d542eb8949/master?filepath=Kaibu-jupyter-tutorial.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1uwBG7mGnzcycwthucS5-I-KVSajIxUjq)
 
-## Setup
+Kaibu is a web application for visualizing and annotating multi-dimensional images, built with [OpenLayers](https://openlayers.org/) and [itk-vtk-viewer](https://kitware.github.io/itk-vtk-viewer/).
 
-[Copy paste](https://github.com/streamlit/component-template#quickstart) of the original component-template quickstart.
+----
+***WARNING: This is a work-in-progress repo, you are welcome to try it out but it's not ready for use in production yet.***
 
-- Ensure you have [Python 3.6+](https://www.python.org/downloads/), [Node.js](https://nodejs.org), and [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) installed.
-- Clone this repo.
-- Create a new Python virtual environment for the template:
+Documentation: https://kaibu.org/docs/
+
+## How to use Kaibu?
+
+The flexibel design of Kaibu allows you to use it in different ways as explained in the sections below.
+
+### As standalone application
+
+Visit [https://kaibu.org](https://kaibu.org) to see Kaibu as a stand-alone appliction running in your browser.
+
+![Kaibu Screenshot](https://raw.githubusercontent.com/imjoy-team/kaibu/master/public/static/img/kaibu-screenshot-1.png)
+
+### As ImJoy plugin
+
+https://imjoy.io/#/app?plugin=https://kaibu.org/#/app
+
+Currently we support `view_image`, `add_image`, `add_shapes` and `add_points`, the definition is mostly the same as [napari](https://napari.org/).
+
+### Kaibu API functions for ImJoy
+
+See documentation [https://kaibu.org/docs/#/api](https://kaibu.org/docs/#/api).
+
+### In a Jupyter notebook
+
+First, install Kaibu with `pip install imjoy-jupyter-extension`, then start the Jupyter notebook. Then you can use the above plugin example in the notebook.
+
+You can try the demo on Binder here: [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gist/oeway/690c2e62311223ae93e644d542eb8949/master?filepath=Kaibu-jupyter-tutorial.ipynb)
+
+### Kaibu badges
+
+We provide two badges for you to add to your project:
+
+![open with kaibu](https://kaibu.org/static/badge/open-with-kaibu.svg)
+
+![view in kaibu](https://kaibu.org/static/badge/view-in-kaibu.svg)
 
 ```
-$ python3 -m venv venv  # create venv
-$ . venv/bin/activate   # activate venv
-$ pip install streamlit # install streamlit
+![open with kaibu](https://kaibu.org/static/badge/open-with-kaibu.svg)
+
+![view in kaibu](https://kaibu.org/static/badge/view-in-kaibu.svg)
 ```
 
-- Initialize and run the component template frontend:
+## Why Kaibu?
 
-```
-$ cd my_component/frontend
-$ npm install    # Install npm dependencies
-$ npm run start  # Start the Webpack dev server
-```
+`Kaibu` is [a small island in Fiji](https://www.google.com/maps/place/Kaibu+Island/), and we name it to pay tribute to the open source image processing package [Fiji](https://fiji.sc/)/[ImageJ](https://imagej.net). Meanwhile, the layered design of Kaibu is inspired by [Napari](https://napari.org/) which is also named after an island. `Kaibu` in Chinese(开步) means "to step forward", and yes, it is time to step forward with Kaibu!
 
-- From a separate terminal, run the template's Streamlit app:
+<img src="https://raw.githubusercontent.com/imjoy-team/kaibu/master/public/static/img/kaibu-logo.gif?sanitize=true" width="400" alt="Kaibu"></img>
 
-```
-$ . venv/bin/activate  # activate the venv you created earlier
-$ streamlit run my_component/__init__.py  # run the example
-```
 
-- If all goes well, you should see something like this:
-  ![Quickstart Success](quickstart.png)
-- Modify the frontend code at `my_component/frontend/src/MyComponent.vue`.
-  - Parameters passed by Python script are made available in `args` props.
-- Modify the Python code at `my_component/__init__.py`.
-- Feel free to rename the `my_component` folder, `MyComponent.vue` file with its import in `App.vue`, and package name in `setup.py` and `package.json`.
+## License
 
-## Resources
-
-- [Higher Order Components in Vue.js](https://medium.com/bethink-pl/higher-order-components-in-vue-js-a79951ac9176)
-- [Do we need Higher Order Components in Vue.js?](https://medium.com/bethink-pl/do-we-need-higher-order-components-in-vue-js-87c0aa608f48)
-- [Single File Components](https://vuejs.org/v2/guide/single-file-components.html)
-- [SFC Spec](https://vue-loader.vuejs.org/spec.html)
-- [createElement Arguments](https://vuejs.org/v2/guide/render-function.html#createElement-Arguments)
-- [Scoped slots](https://vuejs.org/v2/guide/components-slots.html#Scoped-Slots)
-- [Using Slots in Vue.js](https://www.smashingmagazine.com/2019/07/using-slots-vue-js/)
-- [Render Functions](https://vuejs.org/v2/guide/render-function.html)
+MIT
